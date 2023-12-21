@@ -4,8 +4,8 @@ const TodoService = require("../services/todo.service");
 // ý
 exports.createTodo = async (req, res, next) => {
   try {
-    const { id, title, description, image, price } = req.body;
-    let todo = await TodoService.createTodo(id, title, description, image, price);
+    const { id, title, description, detail, image, classify, price } = req.body;
+    let todo = await TodoService.createTodo(id, title, description, detail, image, classify, price);
     // xoa model
     res.json({ status: true, success: todo });
   } catch (error) {
@@ -37,7 +37,7 @@ exports.deleteProductById = async (req, res, next) => {
     const deleted = await TodoService.deleteTodoById(id);
 
     if (!deleted) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({ message: "Product not found" });
     }
 
     res.json({ status: true, success: deleted });
@@ -58,4 +58,3 @@ exports.updateTodoById = async (req, res, next) => {
     next(error);
   }
 };
-

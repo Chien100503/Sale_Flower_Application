@@ -18,9 +18,6 @@ class _HomePageState extends State<HomePage> {
       () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomeLogin()),
-      //   nó lỗi là do chỉ gọi được api trên web thôi
-        // thôi dùng tạm rứa đc mà chừ thêm ảnh kiểu chi mấy ảo k copy link đc
-      //   là sao hè
       ),
     );
   }

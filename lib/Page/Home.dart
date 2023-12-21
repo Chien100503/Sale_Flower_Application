@@ -84,9 +84,17 @@ class _HomeIndexState extends State<HomeIndex> {
                     width: 100,
                   ),
                   const Search(),
+                  // IconButton(
+                  //   icon: const Icon(
+                  //     Icons.favorite_border,
+                  //     color: Colors.black,
+                  //     size: 30,
+                  //   ),
+                  //   onPressed: () {},
+                  // ),
                   IconButton(
                     icon: const Icon(
-                      Icons.favorite_border,
+                      Icons.shopping_cart,
                       color: Colors.black,
                       size: 30,
                     ),

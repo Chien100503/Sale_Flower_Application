@@ -41,7 +41,6 @@ class _Search_BodyState extends State<Search_Body> {
               children: [
                 Expanded(
                   child: TextField(
-
                     controller: _controller,
                     onChanged: _onChanged,
                     decoration: InputDecoration(

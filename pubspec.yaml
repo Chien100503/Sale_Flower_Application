@@ -33,6 +33,8 @@ dependencies:
   velocity_x:
   http:
   shared_preferences:
+  lottie: ^2.7.0
+  numberpicker: ^2.1.2
   jwt_decoder:
   flutter_slidable: ^3.0.1
   draggable_fab: ^0.1.4

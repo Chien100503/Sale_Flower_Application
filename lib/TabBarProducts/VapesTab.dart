@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../Components/FloatingButton.dart';
 import '../Db/Config.dart';
@@ -21,15 +24,20 @@ class _VapeProductsState extends State<VapeProducts> {
 
   late TextEditingController _title;
   late TextEditingController _description;
+  late TextEditingController _detail;
+  late TextEditingController _classify;
   late TextEditingController _image;
   late TextEditingController _price;
   late String? userId;
+  int _currentValue = 0;
 
   @override
   void initState() {
     super.initState();
     _title = TextEditingController();
     _description = TextEditingController();
+    _detail = TextEditingController();
+    _classify = TextEditingController();
     _image = TextEditingController();
     _price = TextEditingController();
     listStore(); // Call listStore to fetch data when the widget initializes
@@ -43,12 +51,16 @@ class _VapeProductsState extends State<VapeProducts> {
     if (userId != null &&
         _title.text.isNotEmpty &&
         _description.text.isNotEmpty &&
+        _detail.text.isNotEmpty &&
+        _classify.text.isNotEmpty &&
         _image.text.isNotEmpty &&
         _price.text.isNotEmpty) {
       var regBody = {
         "UserId": local.getString('userId'),
         "title": _title.text,
         "description": _description.text,
+        "detail": _detail.text,
+        "classify": _classify.text,
         "image": _image.text,
         "price": _price.text,
       };
@@ -104,8 +116,6 @@ class _VapeProductsState extends State<VapeProducts> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +136,16 @@ class _VapeProductsState extends State<VapeProducts> {
                       dismissible: DismissiblePane(onDismissed: () {}),
                       children: [
                         SlidableAction(
+                          backgroundColor: Color(0xff81AA66),
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                          onPressed: (BuildContext context) {
+                            // deleteProduct('${items![index]['_id']}');
+                            null;
+                          },
+                        ),
+                        SlidableAction(
                           backgroundColor: Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
@@ -140,7 +160,7 @@ class _VapeProductsState extends State<VapeProducts> {
                       borderOnForeground: false,
                       child: ListTile(
                         leading: Dialog.fullscreen(
-                          child: Container(
+                          child: SizedBox(
                               height: 50,
                               width: 50,
                               child: Image(
@@ -149,7 +169,23 @@ class _VapeProductsState extends State<VapeProducts> {
                         ),
                         title: Text('${items![index]['title']}'),
                         subtitle: Text('${items![index]['description']}'),
-                        trailing: Text('${items![index]['price']}\$'),
+                        trailing: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.transparent),
+                              elevation: MaterialStatePropertyAll(0),
+                            ),
+                            child: Lottie.asset('lib/assets/buy.json',
+                                width: 100, height: 150),
+                            onPressed: () {
+                              _showDialogCart(context, items![index]);
+                            },
+                          ),
+                        ),
+                        // Text('${items![index]['price']}\$'),
                         onTap: () {
                           _showDialog(context, items![index]);
                         },
@@ -180,15 +216,59 @@ class _VapeProductsState extends State<VapeProducts> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Container(
-            height: 100,
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
             width: 100,
             child: Column(
               children: [
                 Image(image: NetworkImage('${item['image']}')),
+                Text('${item['detail']}'),
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showDialogCart(BuildContext context, Map<String, dynamic> item) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              content: SizedBox(
+
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.8, // Sửa lại chiều rộng
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children:[
+                    NumberPicker(
+                      itemCount: 7,
+                      itemHeight: 45,
+                      itemWidth: 45,
+                      axis: Axis.horizontal,
+                      value: _currentValue,
+                      minValue: 0,
+                      maxValue: 100,
+                      onChanged: (v) {
+                        setState(() {
+                          _currentValue = v; // Cập nhật giá trị khi thay đổi
+                          _price.text = (v * int.parse(item['price'])).toString();
+                          print(_price.text);
+                        });
+                      },
+                    ),
+                    Text('Số lượng: $_currentValue'),
+                    Text('${item['price']}\$'),
+                    Text('Tổng tiền: ${_price.text}\$'),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

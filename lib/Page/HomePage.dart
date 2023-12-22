@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cannabis/intro_pages/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cannabis/Page/HomeLogin.dart';
 
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
       Duration(milliseconds: 2000),
       () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomeLogin()),
+        MaterialPageRoute(builder: (context) => OnBoardingScreen()),
       ),
     );
   }
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Image.asset('lib/assets/logo.png'),
       ),
+
     );
   }
 }

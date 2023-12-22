@@ -35,6 +35,7 @@ dependencies:
   shared_preferences:
   lottie: ^2.7.0
   numberpicker: ^2.1.2
+  smooth_page_indicator: ^1.1.0
   jwt_decoder:
   flutter_slidable: ^3.0.1
   draggable_fab: ^0.1.4

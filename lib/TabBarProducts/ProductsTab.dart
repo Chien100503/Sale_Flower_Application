@@ -5,21 +5,20 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../Components/FloatingButton.dart';
 import '../Db/Config.dart';
 
-class VapeProducts extends StatefulWidget {
+class Products extends StatefulWidget {
   final token;
 
-  const VapeProducts({@required this.token, Key? key}) : super(key: key);
+  const Products({@required this.token, Key? key}) : super(key: key);
 
   @override
-  State<VapeProducts> createState() => _VapeProductsState();
+  State<Products> createState() => _ProductsState();
 }
 
-class _VapeProductsState extends State<VapeProducts> {
+class _ProductsState extends State<Products> {
   List? items;
 
   late TextEditingController _title;
@@ -238,15 +237,16 @@ class _VapeProductsState extends State<VapeProducts> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
+              backgroundColor: Colors.brown.shade200,
               content: SizedBox(
-
                 height: MediaQuery.of(context).size.height * 0.3,
-                width: MediaQuery.of(context).size.width * 0.8, // Sửa lại chiều rộng
+                width: MediaQuery.of(context).size.width *
+                    0.8, // Sửa lại chiều rộng
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children:[
+                  children: [
                     NumberPicker(
-                      itemCount: 7,
+                      itemCount: 6,
                       itemHeight: 45,
                       itemWidth: 45,
                       axis: Axis.horizontal,
@@ -256,14 +256,26 @@ class _VapeProductsState extends State<VapeProducts> {
                       onChanged: (v) {
                         setState(() {
                           _currentValue = v; // Cập nhật giá trị khi thay đổi
-                          _price.text = (v * int.parse(item['price'])).toString();
-                          print(_price.text);
+                          // _price.text = (v * int.parse(item['price'])).toString();
+                          // print(_price.text);
                         });
                       },
                     ),
                     Text('Số lượng: $_currentValue'),
-                    Text('${item['price']}\$'),
-                    Text('Tổng tiền: ${_price.text}\$'),
+                    Text('Giá: ${item['price']}\$'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.green.shade100
+                          ),
+                          child: InkWell(
+                              onTap: () {},
+                              child: Lottie.asset('lib/assets/buys.json', width: 70, height: 70))),
+                    )
                   ],
                 ),
               ),

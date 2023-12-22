@@ -1,4 +1,4 @@
-import 'package:cannabis/TabBarProducts/VapesTab.dart';
+import 'package:cannabis/TabBarProducts/ProductsTab.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart' ;
 import 'Page/HomePage.dart';

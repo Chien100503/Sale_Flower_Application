@@ -32,10 +32,10 @@ class _ProfileState extends State<Profile> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: Column(
+                  child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
                         child: const Align(
@@ -48,16 +48,40 @@ class _ProfileState extends State<Profile> {
                           Navigator.pop(context);
                         },
                       ),
+                      SizedBox(width: 250,),
+                      InkWell(
+                        child: const Align(
+                            alignment: Alignment.topLeft,
+                            child: Icon(
+                              Icons.notifications,
+                              color: Colors.white,
+                            )),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      SizedBox(width: 30,),
+                      InkWell(
+                        child: const Align(
+                            alignment: Alignment.topLeft,
+                            child: Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                            )),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ],
                   ),
                 ),
               ),
               const Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 110, left: 30),
+                  padding: const EdgeInsets.only(top: 70, left: 100),
                   child: SizedBox(
-                    width: 100,
-                    height: 100,
+                    width: 200,
+                    height: 200,
                     child: CircleAvatar(
                       backgroundImage: AssetImage('lib/assets/faceavt.jpg'),
                       radius: 35,

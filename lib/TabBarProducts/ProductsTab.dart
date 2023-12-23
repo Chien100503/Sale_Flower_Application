@@ -18,7 +18,8 @@ class Products extends StatefulWidget {
   State<Products> createState() => _ProductsState();
 }
 
-class _ProductsState extends State<Products> {
+class _ProductsState extends State<Products>
+    with SingleTickerProviderStateMixin {
   List? items;
 
   late TextEditingController _title;
@@ -30,9 +31,14 @@ class _ProductsState extends State<Products> {
   late String? userId;
   int _currentValue = 0;
 
+  late AnimationController _controllerAnimation;
+  bool animationCompleted = false;
+
   @override
   void initState() {
     super.initState();
+    _controllerAnimation =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
     _title = TextEditingController();
     _description = TextEditingController();
     _detail = TextEditingController();
@@ -41,6 +47,14 @@ class _ProductsState extends State<Products> {
     _price = TextEditingController();
     listStore(); // Call listStore to fetch data when the widget initializes
   }
+
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controllerAnimation.dispose();
+  }
+
+  bool submit = false;
 
   Future<void> addProducts() async {
     SharedPreferences local = await SharedPreferences.getInstance();
@@ -256,25 +270,48 @@ class _ProductsState extends State<Products> {
                       onChanged: (v) {
                         setState(() {
                           _currentValue = v; // Cập nhật giá trị khi thay đổi
-                          // _price.text = (v * int.parse(item['price'])).toString();
-                          // print(_price.text);
+                          _price.text = (v * (item['price'])).toString();
+                          // print('cehckk-----------' + ${(item['price']).runtimeType);
+                          print(item['price']);
                         });
                       },
                     ),
                     Text('Số lượng: $_currentValue'),
-                    Text('Giá: ${item['price']}\$'),
+                    // Text('Giá: ${item['price']}\$'),
+                    Text('Giá: ${_price.text}\$'),
                     Padding(
                       padding: const EdgeInsets.only(top: 50),
                       child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: Colors.green.shade100
-                          ),
+                            color: Colors.green.shade100),
+                        child: InkWell(
+                          onTap: () {
+                            if (submit == false) {
+                              submit = true;
+                              _controllerAnimation.forward();
+                            } else {
+                              _controllerAnimation.reverse();
+                            }
+                            Future.delayed(
+                              Duration(seconds: 2),
+                              () {
+                                addProducts();
+                                animationCompleted = true;
+                              },
+                            );
+                          },
                           child: InkWell(
-                              onTap: () {},
-                              child: Lottie.asset('lib/assets/buys.json', width: 70, height: 70))),
+                            child: Lottie.asset(
+                              'lib/assets/buys.json',
+                              width: 70,
+                              height: 70,
+                            ),
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 ),

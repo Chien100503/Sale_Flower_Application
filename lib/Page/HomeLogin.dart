@@ -80,7 +80,7 @@ class _HomeLoginState extends State<HomeLogin> {
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10)),
-                        child: Center(
+                        child: const Center(
                           child: Text('Join',
                               style: TextStyle(
                                   color: Color(0xff81AA66),

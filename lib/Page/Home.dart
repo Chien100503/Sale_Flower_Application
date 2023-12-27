@@ -3,7 +3,9 @@ import 'package:cannabis/DrawerPages/Edibles.dart';
 import 'package:cannabis/DrawerPages/Explore.dart';
 import 'package:cannabis/DrawerPages/Extracts.dart';
 import 'package:cannabis/DrawerPages/Flowers.dart';
-import 'package:cannabis/DrawerPages/Vapes.dart';
+import 'package:cannabis/DrawerPages/Products.dart';
+import 'package:cannabis/Page/Cart.dart';
+import 'package:cannabis/Page/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:page_transition/page_transition.dart';
@@ -84,13 +86,27 @@ class _HomeIndexState extends State<HomeIndex> {
                     width: 100,
                   ),
                   const Search(),
+                  // IconButton(
+                  //   icon: const Icon(
+                  //     Icons.favorite_border,
+                  //     color: Colors.black,
+                  //     size: 30,
+                  //   ),
+                  //   onPressed: () {},
+                  // ),
                   IconButton(
+                    style: ButtonStyle(
+                    ),
                     icon: const Icon(
-                      Icons.favorite_border,
+                      Icons.shopping_cart,
                       color: Colors.black,
                       size: 30,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return Cart();
+                      }));
+                    },
                   ),
                   const CircleAvatar(
                     backgroundImage: AssetImage('lib/assets/faceavt.jpg'),
@@ -146,7 +162,7 @@ class _HomeIndexState extends State<HomeIndex> {
                   selectedColor: const Color(0xff81AA66),
                   textColor: Colors.grey,
                   title: const Text(
-                    'Vapes',
+                    'Products',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   selected: _selectedIndex == 1,
@@ -161,7 +177,7 @@ class _HomeIndexState extends State<HomeIndex> {
                   selectedColor: const Color(0xff81AA66),
                   textColor: Colors.grey,
                   title: const Text(
-                    'Extracts',
+                    'Cart',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   selected: _selectedIndex == 2,
@@ -169,14 +185,16 @@ class _HomeIndexState extends State<HomeIndex> {
                     // Update the state of the app
                     _onItemTapped(2);
                     // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return Cart();
+                    }));
                   },
                 ),
                 ListTile(
                   selectedColor: const Color(0xff81AA66),
                   textColor: Colors.grey,
                   title: const Text(
-                    'Edibles',
+                    'Profile',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   selected: _selectedIndex == 3,
@@ -184,37 +202,9 @@ class _HomeIndexState extends State<HomeIndex> {
                     // Update the state of the app
                     _onItemTapped(3);
                     // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  selectedColor: const Color(0xff81AA66),
-                  textColor: Colors.grey,
-                  title: const Text(
-                    'Flowers',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                  ),
-                  selected: _selectedIndex == 4,
-                  onTap: () {
-                    // Update the state of the app
-                    _onItemTapped(4);
-                    // Then close the drawer
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  selectedColor: const Color(0xff81AA66),
-                  textColor: Colors.grey,
-                  title: const Text(
-                    'Accessories',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                  ),
-                  selected: _selectedIndex == 5,
-                  onTap: () {
-                    // Update the state of the app
-                    _onItemTapped(5);
-                    // Then close the drawer
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return Profile();
+                    }));
                   },
                 ),
                 const SizedBox(
@@ -228,10 +218,10 @@ class _HomeIndexState extends State<HomeIndex> {
                         fontSize: 18,
                         fontWeight: FontWeight.w700),
                   ),
-                  selected: _selectedIndex == 6,
+                  selected: _selectedIndex == 4,
                   onTap: () {
                     // Update the state of the app
-                    _onItemTapped(6);
+                    _onItemTapped(4);
                     // Then close the drawer
                     Navigator.push(
                         context,

@@ -1,9 +1,12 @@
 const TodoModel = require("../model/todo.model");
 const UserModel = require("../model/user.model");
 const { Types } = require("mongoose");
+
+
+// sửa đoạn này thêm trường detail - classify
 class TodoService {
-  static async createTodo(id, title, description, image, price) {
-    const createTodo = new TodoModel({ id, title, description, image, price });
+  static async createTodo(id, title, description, detail, image, classify, price) {
+    const createTodo = new TodoModel({ id, title, description, detail, image, classify, price });
     return await createTodo.save();
   }
 
@@ -17,26 +20,22 @@ class TodoService {
       const deletedTodo = await TodoModel.findByIdAndDelete(id);
       return deletedTodo;
     } catch (error) {
-      console.error('Error deleting todo:', error);
+      console.error("Error deleting todo:", error);
       throw error;
     }
   }
-
-  static async updateTodoById(id, title, description, image, price) {
+// sửa đoạn này thêm trường detail - classify
+  static async updateTodoById(id, title, description, detail, image, classify, price) {
     try {
-      const updatedTodo = await TodoModel.findOneAndUpdate(
-        { _id: id },
-        { title, description, image, price },
-        { new: true }
-      );
+      const updatedTodo = await TodoModel.findOneAndUpdate({ _id: id }, { id, title, description, detail, image, classify, price  }, { new: true });
 
       if (!updatedTodo) {
-        throw new Error('Todo not found');
+        throw new Error("Todo not found");
       }
 
       return updatedTodo;
     } catch (error) {
-      console.error('Error updating todo:', error);
+      console.error("Error updating todo:", error);
       throw error;
     }
   }

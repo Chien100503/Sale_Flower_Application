@@ -1,39 +1,60 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../Components/FloatingButton.dart';
 import '../Db/Config.dart';
 
-class VapeProducts extends StatefulWidget {
+class Products extends StatefulWidget {
   final token;
 
-  const VapeProducts({@required this.token, Key? key}) : super(key: key);
+  const Products({@required this.token, Key? key}) : super(key: key);
 
   @override
-  State<VapeProducts> createState() => _VapeProductsState();
+  State<Products> createState() => _ProductsState();
 }
 
-class _VapeProductsState extends State<VapeProducts> {
+class _ProductsState extends State<Products>
+    with SingleTickerProviderStateMixin {
   List? items;
 
   late TextEditingController _title;
   late TextEditingController _description;
+  late TextEditingController _detail;
+  late TextEditingController _classify;
   late TextEditingController _image;
   late TextEditingController _price;
   late String? userId;
+  int _currentValue = 0;
+
+  late AnimationController _controllerAnimation;
+  bool animationCompleted = false;
 
   @override
   void initState() {
     super.initState();
+    _controllerAnimation =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
     _title = TextEditingController();
     _description = TextEditingController();
+    _detail = TextEditingController();
+    _classify = TextEditingController();
     _image = TextEditingController();
     _price = TextEditingController();
     listStore(); // Call listStore to fetch data when the widget initializes
   }
+
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controllerAnimation.dispose();
+  }
+
+  bool submit = false;
 
   Future<void> addProducts() async {
     SharedPreferences local = await SharedPreferences.getInstance();
@@ -43,12 +64,16 @@ class _VapeProductsState extends State<VapeProducts> {
     if (userId != null &&
         _title.text.isNotEmpty &&
         _description.text.isNotEmpty &&
+        _detail.text.isNotEmpty &&
+        _classify.text.isNotEmpty &&
         _image.text.isNotEmpty &&
         _price.text.isNotEmpty) {
       var regBody = {
         "UserId": local.getString('userId'),
         "title": _title.text,
         "description": _description.text,
+        "detail": _detail.text,
+        "classify": _classify.text,
         "image": _image.text,
         "price": _price.text,
       };
@@ -104,8 +129,6 @@ class _VapeProductsState extends State<VapeProducts> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +149,16 @@ class _VapeProductsState extends State<VapeProducts> {
                       dismissible: DismissiblePane(onDismissed: () {}),
                       children: [
                         SlidableAction(
+                          backgroundColor: Color(0xff81AA66),
+                          foregroundColor: Colors.white,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                          onPressed: (BuildContext context) {
+                            // deleteProduct('${items![index]['_id']}');
+                            null;
+                          },
+                        ),
+                        SlidableAction(
                           backgroundColor: Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
@@ -140,7 +173,7 @@ class _VapeProductsState extends State<VapeProducts> {
                       borderOnForeground: false,
                       child: ListTile(
                         leading: Dialog.fullscreen(
-                          child: Container(
+                          child: SizedBox(
                               height: 50,
                               width: 50,
                               child: Image(
@@ -149,7 +182,23 @@ class _VapeProductsState extends State<VapeProducts> {
                         ),
                         title: Text('${items![index]['title']}'),
                         subtitle: Text('${items![index]['description']}'),
-                        trailing: Text('${items![index]['price']}\$'),
+                        trailing: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.transparent),
+                              elevation: MaterialStatePropertyAll(0),
+                            ),
+                            child: Lottie.asset('lib/assets/buy.json',
+                                width: 100, height: 150),
+                            onPressed: () {
+                              _showDialogCart(context, items![index]);
+                            },
+                          ),
+                        ),
+                        // Text('${items![index]['price']}\$'),
                         onTap: () {
                           _showDialog(context, items![index]);
                         },
@@ -180,15 +229,95 @@ class _VapeProductsState extends State<VapeProducts> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Container(
-            height: 100,
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
             width: 100,
             child: Column(
               children: [
                 Image(image: NetworkImage('${item['image']}')),
+                Text('${item['detail']}'),
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showDialogCart(BuildContext context, Map<String, dynamic> item) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              backgroundColor: Colors.brown.shade200,
+              content: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width *
+                    0.8, // Sửa lại chiều rộng
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    NumberPicker(
+                      itemCount: 6,
+                      itemHeight: 45,
+                      itemWidth: 45,
+                      axis: Axis.horizontal,
+                      value: _currentValue,
+                      minValue: 0,
+                      maxValue: 100,
+                      onChanged: (v) {
+                        setState(() {
+                          _currentValue = v; // Cập nhật giá trị khi thay đổi
+                          _price.text = (v * (item['price'])).toString();
+                          // print('cehckk-----------' + ${(item['price']).runtimeType);
+                          print(item['price']);
+                        });
+                      },
+                    ),
+                    Text('Số lượng: $_currentValue'),
+                    // Text('Giá: ${item['price']}\$'),
+                    Text('Giá: ${_price.text}\$'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.green.shade100),
+                        child: InkWell(
+                          onTap: () {
+                            if (submit == false) {
+                              submit = true;
+                              _controllerAnimation.forward();
+                            } else {
+                              _controllerAnimation.reverse();
+                            }
+                            Future.delayed(
+                              Duration(seconds: 2),
+                              () {
+                                addProducts();
+                                animationCompleted = true;
+                              },
+                            );
+                          },
+                          child: InkWell(
+                            child: Lottie.asset(
+                              'lib/assets/buys.json',
+                              width: 70,
+                              height: 70,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

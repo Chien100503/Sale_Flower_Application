@@ -141,20 +141,20 @@ class _LoginState extends State<Login> {
       width: 315,
       height: 56,
       child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(width: 19),
-          ),
-          labelText: labelText,
-          errorText: _isNotValidate ? "Enter Proper Info" : null,
-          labelStyle: TextStyle(color: Color(0xff81AA66)),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xff81AA66)),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
+    controller: controller,
+    decoration: InputDecoration(
+    border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8.0),
+    borderSide: BorderSide(width: 19),
+    ),
+    labelText: labelText,
+    errorText: _isNotValidate ? "Enter Proper Info" : null,
+    labelStyle: TextStyle(color: Color(0xff81AA66)),
+    focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Color(0xff81AA66)),
+    borderRadius: BorderRadius.circular(8.0),
+    ),
+    ),
         keyboardType: inputType,
       ),
     );

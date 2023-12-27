@@ -17,6 +17,16 @@ const todoSchema = new Schema({
     type: "string",
     require: true,
   },
+  // thêm trường
+  detail: {
+    type: "string",
+    require: true,
+  },
+  // thêm trường
+  classify: {
+    type: "string",
+    require: true,
+  },
   image: {
     type: "string",
   },

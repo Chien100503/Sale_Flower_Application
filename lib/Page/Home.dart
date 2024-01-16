@@ -1,5 +1,4 @@
 import 'package:cannabis/DrawerPages/Accessories.dart';
-import 'package:cannabis/DrawerPages/Edibles.dart';
 import 'package:cannabis/DrawerPages/Explore.dart';
 import 'package:cannabis/DrawerPages/Extracts.dart';
 import 'package:cannabis/DrawerPages/Flowers.dart';
@@ -38,7 +37,6 @@ class _HomeIndexState extends State<HomeIndex> {
     Explore(),
     VapesPage(),
     Extractspage(),
-    EdiblesPages(),
     FlowersPage(),
     AccessoriesPage()
   ];

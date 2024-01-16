@@ -49,7 +49,7 @@ class _VapesPageState extends State<VapesPage>
                         children: [
                           TabBar(
                             physics: ScrollPhysics(),
-                            labelColor: Colors.blueGrey,
+                            labelColor: Colors.white,
                             indicator: BoxDecoration(
                               color: Color(0xff81AA66), // Màu của đường chỉ báo tab được chọn
                             ),

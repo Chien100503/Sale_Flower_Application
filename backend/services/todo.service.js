@@ -2,7 +2,6 @@ const TodoModel = require("../model/todo.model");
 const UserModel = require("../model/user.model");
 const { Types } = require("mongoose");
 
-
 // sửa đoạn này thêm trường detail - classify
 class TodoService {
   static async createTodo(id, title, description, detail, image, classify, price) {
@@ -24,11 +23,11 @@ class TodoService {
       throw error;
     }
   }
-// sửa đoạn này thêm trường detail - classify
+  // sửa đoạn này thêm trường detail - classify
   static async updateTodoById(id, title, description, detail, image, classify, price) {
     try {
-      const updatedTodo = await TodoModel.findOneAndUpdate({ _id: id }, { id, title, description, detail, image, classify, price  }, { new: true });
-
+      const updatedTodo = await TodoModel.findOneAndUpdate({ _id: id }, { id, title, description, detail, image, price }, { new: true });
+      console.log(updatedTodo);
       if (!updatedTodo) {
         throw new Error("Todo not found");
       }

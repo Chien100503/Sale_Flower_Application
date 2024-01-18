@@ -93,13 +93,15 @@ class _ProductsState extends State<Products>
         print('something went wrong $jsonResponse');
       }
     }
+
   }
-  Future<void> updateProducts() async {
+  Future<void> updateProducts(String id) async {
+    print(id);
     SharedPreferences local = await SharedPreferences.getInstance();
-    setState(() {
-      userId = local.getString('userId');
-    });
-    if (userId != null &&
+    // setState(() {
+    //   id = local.getString('id');
+    // });
+    if (id != null &&
         _title.text.isNotEmpty &&
         _description.text.isNotEmpty &&
         _detail.text.isNotEmpty &&
@@ -110,17 +112,20 @@ class _ProductsState extends State<Products>
         "title": _title.text,
         "description": _description.text,
         "detail": _detail.text,
-        "classify": _classify.text,
         "image": _image.text,
         "price": _price.text,
       };
-      var response = await http.post(
-        Uri.parse(updateProduct),
+      print(regBody);
+      var response = await http.put(
+        Uri.parse('$updateProduct$id'),
         headers: {"Content-Type": "application/json"},
+
         body: jsonEncode(regBody),
       );
       print('1123423');
+
       var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
       if (jsonResponse['status'] != null && jsonResponse['status']) {
         print('2234');
         _title.clear();
@@ -361,6 +366,7 @@ class _ProductsState extends State<Products>
     );
   }
   Future<void> _displayEdit(BuildContext context, Map<String, dynamic> item) async {
+    final String id = item['_id'] ?? '';
     _title.text = item['title'] ?? '';
     _description.text = item['description'] ?? '';
     _detail.text = item['detail'] ?? '';
@@ -485,7 +491,7 @@ class _ProductsState extends State<Products>
                   submit = true;
                 }
                 Future.delayed(Duration(seconds: 2),() {
-                  updateProducts();
+                  updateProducts('$id');
                   animationCompleted = true;
                 });
               },

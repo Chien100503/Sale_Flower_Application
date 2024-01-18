@@ -49,7 +49,10 @@ exports.deleteProductById = async (req, res, next) => {
 exports.updateTodoById = async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log("check id", id);
     const { title, description, image, price } = req.body;
+
+    console.log(req.body);
 
     const updatedTodo = await TodoService.updateTodoById(id, title, description, image, price);
 

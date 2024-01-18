@@ -24,14 +24,14 @@ class TodoService {
     }
   }
   // sửa đoạn này thêm trường detail - classify
-  static async updateTodoById(id, title, description, detail, image, classify, price) {
+  static async updateTodoById(id, title, description, detail, image, price) {
     try {
       const updatedTodo = await TodoModel.findOneAndUpdate({ _id: id }, { id, title, description, detail, image, price }, { new: true });
       console.log(updatedTodo);
       if (!updatedTodo) {
         throw new Error("Todo not found");
       }
-
+      console.log(id);
       return updatedTodo;
     } catch (error) {
       console.error("Error updating todo:", error);

@@ -39,10 +39,9 @@ dependencies:
   jwt_decoder:
   flutter_slidable: ^3.0.1
   draggable_fab: ^0.1.4
-  cupertino_icons: ^1.0.2
   page_transition: ^2.0.5
-  flutter_sliding_drawer: ^2.0.0
-  flutter_launcher_icons: ^0.13.1
+  cupertino_icons: ^1.0.2
+  provider: ^6.1.1
 
 
 flutter_icons:

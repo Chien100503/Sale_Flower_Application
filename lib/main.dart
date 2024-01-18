@@ -2,12 +2,13 @@ import 'package:cannabis/TabBarProducts/ProductsTab.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart' ;
 import 'Page/HomePage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget  {
   const MyApp({super.key});
 
   @override
@@ -19,5 +20,11 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
 
+}
+//
+// class RefreshPage with ChangeNotifier{
+//   Future<void> fetchFlower() async {
+//
+//   }
+// }

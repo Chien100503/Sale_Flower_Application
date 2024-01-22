@@ -42,6 +42,9 @@ dependencies:
   page_transition: ^2.0.5
   cupertino_icons: ^1.0.2
   provider: ^6.1.1
+  get: ^4.6.6
+  path_provider: ^2.1.2
+  liquid_pull_to_refresh: ^3.0.1
 
 
 flutter_icons:

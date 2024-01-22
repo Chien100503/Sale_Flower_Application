@@ -1,4 +1,3 @@
-import 'package:cannabis/Page/Cart.dart';
 import 'package:cannabis/model/cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,23 +13,23 @@ import '../Components/FloatingButton.dart';
 import '../Db/Config.dart';
 import '../controller/cart_controller.dart';
 
-class Products extends StatefulWidget {
+class ProductGoToSearch extends StatefulWidget {
+
   final token;
 
-  const Products({@required this.token, Key? key}) : super(key: key);
+  const ProductGoToSearch({@required this.token, Key? key}) : super(key: key);
 
   @override
-  State<Products> createState() => _ProductsState();
+  State<ProductGoToSearch> createState() => _ProductGoToSearchState();
 }
 
-class _ProductsState extends State<Products>
+class _ProductGoToSearchState extends State<ProductGoToSearch>
     with SingleTickerProviderStateMixin {
   Future<void> _handlRefresh() async {
     await listStore();
   }
-
   List? items;
-  List<dynamic> cartItems = [];
+
   late TextEditingController _title;
   late TextEditingController _description;
   late TextEditingController _detail;
@@ -42,10 +41,6 @@ class _ProductsState extends State<Products>
 
   late AnimationController _controllerAnimation;
   bool animationCompleted = false;
-
-  bool ascendingOrderPrice = true;
-  bool ascendingOrderName = true;
-  String? sortByField;
 
   // late ProductsController productsController;
   @override
@@ -186,144 +181,12 @@ class _ProductsState extends State<Products>
     }
   }
 
-  void sort(String field) {
-    setState(() {
-      if (sortByField == field) {
-        if (field == 'price') {
-          ascendingOrderPrice = !ascendingOrderPrice;
-        } else if (field == 'title') {
-          ascendingOrderName = !ascendingOrderName;
-        }
-      } else {
-        sortByField = field;
-        ascendingOrderPrice = true;
-        ascendingOrderName = true;
-      }
-
-      items!.sort((a, b) {
-        if (a[field] is String && b[field] is String) {
-          String valueA = a[field].toString().toLowerCase();
-          String valueB = b[field].toString().toLowerCase();
-          return field == 'price'
-              ? (ascendingOrderPrice
-              ? valueA.compareTo(valueB)
-              : valueB.compareTo(valueA))
-              : (ascendingOrderName
-              ? valueA.compareTo(valueB)
-              : valueB.compareTo(valueA));
-        } else if (a[field] is num && b[field] is num) {
-          double numA = double.parse(a[field].toString());
-          double numB = double.parse(b[field].toString());
-          return field == 'price'
-              ? (ascendingOrderPrice
-              ? numA.compareTo(numB)
-              : numB.compareTo(numA))
-              : (ascendingOrderName
-              ? numA.compareTo(numB)
-              : numB.compareTo(numA));
-        } else {
-          String valueA = a[field].toString().toLowerCase();
-          String valueB = b[field].toString().toLowerCase();
-          return field == 'price'
-              ? (ascendingOrderPrice
-              ? valueA.compareTo(valueB)
-              : valueB.compareTo(valueA))
-              : (ascendingOrderName
-              ? valueA.compareTo(valueB)
-              : valueB.compareTo(valueA));
-        }
-      });
-    });
-  }
-
-  void addToCart(int index) {
-    var selectedProduct = items![index];
-    cartItems.add(selectedProduct);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${selectedProduct['title']} added to Cart'), duration: Duration(seconds: 1),),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff81AA66),
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 40),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () => sort('price'), // Sắp xếp theo giá
-                  child: Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Text('Sort by Price',
-                              style: TextStyle(
-                                  color: Color(0xff81AA66), fontSize: 16)),
-                          SizedBox(width: 5),
-                          // Khoảng trắng giữa văn bản và biểu tượng
-                          ascendingOrderPrice
-                              ? Icon(Icons.arrow_upward, color: Color(
-                              0xff81AA66))
-                              : Icon(Icons.arrow_downward,
-                              color: Color(0xff81AA66)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                InkWell(
-                  onTap: () => sort('title'), // Sắp xếp theo tên
-                  child: Container(
-                    width: 130,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Sort by Name',
-                            style: TextStyle(color: Color(0xff81AA66)),
-                          ),
-                          SizedBox(width: 5),
-                          // Khoảng trắng giữa văn bản và biểu tượng
-                          ascendingOrderName
-                              ? Icon(Icons.arrow_upward, color: Color(
-                              0xff81AA66))
-                              : Icon(Icons.arrow_downward,
-                              color: Color(0xff81AA66)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20,),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => CartScreen(cartItems: cartItems),));
-                  },
-                  child: Icon(Icons.add_shopping_cart),
-                )
-              ],
-            ),
-          )
-        ],
+        title: Text('Products'),
       ),
       backgroundColor: Colors.grey.shade50,
       body: Padding(
@@ -384,43 +247,30 @@ class _ProductsState extends State<Products>
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
-                                        '${items![index]['image']}'))),
+                                        '${items![index]['image']}'
+                                    )
+                                )
+                            ),
                           ),
                         ),
-                        title: Text(
-                          '${items![index]['title']}',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
+                        title: Text('${items![index]['title']}', style: TextStyle(fontWeight: FontWeight.w700),),
                         subtitle: Text('${items![index]['description']}'),
-                        trailing: InkWell(
-                          onTap: () => addToCart(index),
-                          child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Color(0xff81AA66),
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
-                              child: Icon(
-                                Icons.shopping_cart, color: Colors.white,)),
+                        trailing: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStatePropertyAll(Colors.transparent),
+                              elevation: MaterialStatePropertyAll(0),
+                            ),
+                            child: Lottie.asset('lib/assets/buy.json',
+                                width: 100, height: 150),
+                            onPressed: () {
+                              _showDialogCart(context, items![index]);
+                            },
+                          ),
                         ),
-
-                        // trailing: SizedBox(
-                        //   height: 100,
-                        //   width: 100,
-                        //   child: ElevatedButton(
-                        //     style: ButtonStyle(
-                        //       backgroundColor: MaterialStatePropertyAll(
-                        //           Colors.transparent),
-                        //       elevation: MaterialStatePropertyAll(0),
-                        //     ),
-                        //     child: Lottie.asset('lib/assets/buy.json',
-                        //         width: 100, height: 150),
-                        //     onPressed: () {
-                        //       _showDialogCart(context, items![index]);
-                        //     },
-                        //   ),
-                        // ),
                         // Text('${items![index]['price']}\$'),
                         onTap: () {
                           _showDialog(context, items![index]);
@@ -436,9 +286,9 @@ class _ProductsState extends State<Products>
       ),
       floatingActionButton: Container(
         padding: EdgeInsets.only(top: 0),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.transparent,
+          color: Colors.green,
         ),
         width: 50,
         height: 50,
@@ -457,36 +307,18 @@ class _ProductsState extends State<Products>
       builder: (context) {
         return AlertDialog(
           content: Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.7,
             width: 100,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  '${item['title']}',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                Text('${item['title']}', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),),
+                SizedBox(height: 10,),
                 Image(image: NetworkImage('${item['image']}')),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'Ý nghĩa loài hoa',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  '${item['detail']}',
-                  textAlign: TextAlign.justify,
-                ),
+                SizedBox(height: 20,),
+                Text('Ý nghĩa loài hoa', style: TextStyle(fontWeight: FontWeight.w600),),
+                SizedBox(height: 5,),
+                Text('${item['detail']}', textAlign: TextAlign.justify,),
                 Lottie.asset('lib/assets/sale.json', height: 100, width: 100),
               ],
             ),
@@ -496,73 +328,92 @@ class _ProductsState extends State<Products>
     );
   }
 
-  // void _showDialogCart(BuildContext context, Map<String, dynamic> item) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return StatefulBuilder(
-  //         builder: (BuildContext context, StateSetter setState) {
-  //           return AlertDialog(
-  //             backgroundColor: Colors.brown.shade200,
-  //             content: SizedBox(
-  //               height: MediaQuery.of(context).size.height * 0.3,
-  //               width: MediaQuery.of(context).size.width *
-  //                   0.8, // Sửa lại chiều rộng
-  //               child: Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   NumberPicker(
-  //                     itemCount: 6,
-  //                     itemHeight: 45,
-  //                     itemWidth: 45,
-  //                     axis: Axis.horizontal,
-  //                     value: _currentValue,
-  //                     minValue: 0,
-  //                     maxValue: 100,
-  //                     onChanged: (v) {
-  //                       setState(() {
-  //                         _currentValue = v; // Cập nhật giá trị khi thay đổi
-  //                         _price.text = (v * (item['price'])).toString();
-  //                         // print('cehckk-----------' + ${(item['price']).runtimeType);
-  //                         print(item['price']);
-  //                       });
-  //                     },
-  //                   ),
-  //                   Text('Số lượng: $_currentValue'),
-  //                   // Text('Giá: ${item['price']}\$'),
-  //                   Text('Giá: ${_price.text}\$'),
-  //                   Padding(
-  //                     padding: const EdgeInsets.only(top: 50),
-  //                     child: Container(
-  //                       height: 100,
-  //                       width: 100,
-  //                       decoration: BoxDecoration(
-  //                           borderRadius: BorderRadius.circular(50),
-  //                           color: Colors.green.shade100),
-  //                       child: InkWell(
-  //                         onTap: () =>addToCart(index),
-  //                         child: InkWell(
-  //                           child: Lottie.asset(
-  //                             'lib/assets/buys.json',
-  //                             width: 70,
-  //                             height: 70,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
+  void _showDialogCart(BuildContext context, Map<String, dynamic> item) {
+    final cartController = Get.put(CartController());
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              backgroundColor: Colors.brown.shade200,
+              content: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width *
+                    0.8, // Sửa lại chiều rộng
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    NumberPicker(
+                      itemCount: 6,
+                      itemHeight: 45,
+                      itemWidth: 45,
+                      axis: Axis.horizontal,
+                      value: _currentValue,
+                      minValue: 0,
+                      maxValue: 100,
+                      onChanged: (v) {
+                        setState(() {
+                          _currentValue = v; // Cập nhật giá trị khi thay đổi
+                          _price.text = (v * (item['price'])).toString();
+                          // print('cehckk-----------' + ${(item['price']).runtimeType);
+                          print(item['price']);
+                        });
+                      },
+                    ),
+                    Text('Số lượng: $_currentValue'),
+                    // Text('Giá: ${item['price']}\$'),
+                    Text('Giá: ${_price.text}\$'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.green.shade100),
+                        child: InkWell(
+                          onTap: () {
+                            Future.delayed(
+                              Duration(seconds: 2),
+                                  () {
+                                // Add product to the cart
+                                Cart cart = Cart(
+                                  userId: item['UserId'],
+                                  title: item['title'],
+                                  description: item['description'],
+                                  image: item['image'],
+                                  price: _price.text,
+                                );
+                                cartController.addProductToCart(cart);
+                                print(cart);
+                                // Close the dialog
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                          child: InkWell(
+                            child: Lottie.asset(
+                              'lib/assets/buys.json',
+                              width: 70,
+                              height: 70,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
-  Future<void> _displayEdit(BuildContext context,
-      Map<String, dynamic> item) async {
+  Future<void> _displayEdit(
+      BuildContext context, Map<String, dynamic> item) async {
     final String id = item['_id'] ?? '';
     _title.text = item['title'] ?? '';
     _description.text = item['description'] ?? '';
@@ -577,10 +428,7 @@ class _ProductsState extends State<Products>
           title: Text('Edit Product'),
           content: SingleChildScrollView(
             child: SizedBox(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.57,
+              height: MediaQuery.of(context).size.height * 0.57,
               width: 400,
               child: Column(
                 children: [

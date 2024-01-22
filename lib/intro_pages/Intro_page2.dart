@@ -13,8 +13,9 @@ class _IntroTwoState extends State<IntroTwo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: Colors.red.shade100,
         child: Center(
-          child: Lottie.asset('lib/assets/intro2.json'),
+          child: Lottie.asset('lib/assets/tet2.json'),
         ),
       ),
     );

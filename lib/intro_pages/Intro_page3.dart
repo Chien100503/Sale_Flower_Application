@@ -14,8 +14,14 @@ class _IntroThreeState extends State<IntroThree> {
     return Scaffold(
       body: Container(
         color: Colors.red.shade100,
-        child: Center(
-          child: Lottie.asset('lib/assets/intro3.json'),
+        child: Column(
+          children: [
+            Center(
+              child: Lottie.asset('lib/assets/intro3.json'),
+            ),Center(
+              child: Lottie.asset('lib/assets/tet3.json'),
+            ),
+          ],
         ),
       ),
     );

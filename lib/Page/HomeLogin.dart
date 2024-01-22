@@ -24,7 +24,7 @@ class _HomeLoginState extends State<HomeLogin> {
             width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('lib/assets/brg.png'),
+                    image: AssetImage('lib/assets/bg.jpg'),
                     fit: BoxFit.cover)),
           ),
           Positioned(
@@ -33,7 +33,7 @@ class _HomeLoginState extends State<HomeLogin> {
             child: Column(
               children: [
                 Image(
-                  image: AssetImage('lib/assets/logo.png'),
+                  image: AssetImage('lib/assets/logo.png',),
                   width: 80,
                   height: 80,
                   color: Colors.white,

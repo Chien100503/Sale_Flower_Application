@@ -1,10 +1,13 @@
+import 'package:cannabis/Components/Search_Body.dart';
 import 'package:cannabis/DrawerPages/Accessories.dart';
 import 'package:cannabis/DrawerPages/Explore.dart';
 import 'package:cannabis/DrawerPages/Extracts.dart';
 import 'package:cannabis/DrawerPages/Flowers.dart';
+import 'package:cannabis/DrawerPages/HomeChat.dart';
 import 'package:cannabis/DrawerPages/Products.dart';
 import 'package:cannabis/Page/Cart.dart';
 import 'package:cannabis/Page/Profile.dart';
+import 'package:cannabis/TabBarProducts/ProductsTab.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:page_transition/page_transition.dart';
@@ -20,9 +23,18 @@ class HomeIndex extends StatefulWidget {
   State<HomeIndex> createState() => _HomeIndexState();
 }
 
+
 class _HomeIndexState extends State<HomeIndex> {
   late String? email;
-
+  List? items;
+  List<dynamic> cartItems = [];
+  late TextEditingController _title;
+  late TextEditingController _description;
+  late TextEditingController _detail;
+  late TextEditingController _classify;
+  late TextEditingController _image;
+  late TextEditingController _price;
+  late String? userId;
   @override
   void initState() {
     // TODO: implement initState
@@ -35,10 +47,9 @@ class _HomeIndexState extends State<HomeIndex> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Explore(),
-    VapesPage(),
-    Extractspage(),
-    FlowersPage(),
-    AccessoriesPage()
+    Products(),
+    Profile(),
+    HomeChat()
   ];
 
   void _onItemTapped(int index) {
@@ -52,7 +63,7 @@ class _HomeIndexState extends State<HomeIndex> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 30),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -69,7 +80,7 @@ class _HomeIndexState extends State<HomeIndex> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30),
+              padding: EdgeInsets.only(left: 30, right: 30),
               child: Row(
                 children: [
                   const Image(
@@ -83,7 +94,11 @@ class _HomeIndexState extends State<HomeIndex> {
                   const SizedBox(
                     width: 100,
                   ),
-                  const Search(),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchProduct(),));
+                    },
+                      child: Icon(Icons.search, color: Colors.black, size: 30,)),
                   // IconButton(
                   //   icon: const Icon(
                   //     Icons.favorite_border,
@@ -92,6 +107,7 @@ class _HomeIndexState extends State<HomeIndex> {
                   //   ),
                   //   onPressed: () {},
                   // ),
+                  SizedBox(width: 20,),
                   IconButton(
                     style: ButtonStyle(
                     ),
@@ -102,12 +118,17 @@ class _HomeIndexState extends State<HomeIndex> {
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return Cart();
+                        return CartScreen(cartItems: const [],);
                       }));
                     },
                   ),
-                  const CircleAvatar(
-                    backgroundImage: AssetImage('lib/assets/faceavt.jpg'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
+                    },
+                    child: const CircleAvatar(
+                      backgroundImage: AssetImage('lib/assets/faceavt.jpg'),
+                    ),
                   ),
                 ],
               ),
@@ -171,11 +192,28 @@ class _HomeIndexState extends State<HomeIndex> {
                     Navigator.pop(context);
                   },
                 ),
+                // ListTile(
+                //   selectedColor: Color(0xff81AA66),
+                //   textColor: Colors.grey,
+                //   title: const Text(
+                //     'Cart',
+                //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                //   ),
+                //   selected: _selectedIndex == 2,
+                //   onTap: () {
+                //     // Update the state of the app
+                //     _onItemTapped(2);
+                //     // Then close the drawer
+                //     Navigator.push(context, MaterialPageRoute(builder: (context){
+                //       return CartScreen(cartItems: );
+                //     }));
+                //   },
+                // ),
                 ListTile(
                   selectedColor: const Color(0xff81AA66),
                   textColor: Colors.grey,
                   title: const Text(
-                    'Cart',
+                    'Profile',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   selected: _selectedIndex == 2,
@@ -184,7 +222,7 @@ class _HomeIndexState extends State<HomeIndex> {
                     _onItemTapped(2);
                     // Then close the drawer
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return Cart();
+                      return Profile();
                     }));
                   },
                 ),
@@ -192,7 +230,7 @@ class _HomeIndexState extends State<HomeIndex> {
                   selectedColor: const Color(0xff81AA66),
                   textColor: Colors.grey,
                   title: const Text(
-                    'Profile',
+                    'Chat',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                   selected: _selectedIndex == 3,
@@ -201,7 +239,7 @@ class _HomeIndexState extends State<HomeIndex> {
                     _onItemTapped(3);
                     // Then close the drawer
                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return Profile();
+                      return HomeChat();
                     }));
                   },
                 ),

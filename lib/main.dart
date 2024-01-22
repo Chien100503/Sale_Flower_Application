@@ -1,3 +1,4 @@
+import 'package:cannabis/Page/Home.dart';
 import 'package:cannabis/TabBarProducts/ProductsTab.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart' ;
@@ -13,18 +14,14 @@ class MyApp extends StatelessWidget  {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home:Scaffold(
-        body: HomePage(),
+    return SafeArea(
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home:Scaffold(
+          body: HomePage(),
+        ),
       ),
     );
   }
 
 }
-//
-// class RefreshPage with ChangeNotifier{
-//   Future<void> fetchFlower() async {
-//
-//   }
-// }

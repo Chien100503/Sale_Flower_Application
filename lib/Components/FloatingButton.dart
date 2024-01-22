@@ -228,14 +228,12 @@ class _ButtonAddState extends State<ButtonAdd>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: DraggableFab(
-      child: FloatingActionButton(
-        onPressed: () {
-          _displayTextInputDialog(context);
-        },
-        backgroundColor: Color(0xff81AA66),
-        child: Icon(Icons.add),
-      ),
-    ));
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _displayTextInputDialog(context);
+          },
+          backgroundColor: Color(0xff81AA66),
+          child: Icon(Icons.add),
+        ));
   }
 }

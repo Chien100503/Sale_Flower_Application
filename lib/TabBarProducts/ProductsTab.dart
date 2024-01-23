@@ -15,8 +15,8 @@ import '../Db/Config.dart';
 import '../controller/cart_controller.dart';
 
 class Products extends StatefulWidget {
-  final token;
 
+  final token;
   const Products({@required this.token, Key? key}) : super(key: key);
 
   @override
@@ -38,7 +38,6 @@ class _ProductsState extends State<Products>
   late TextEditingController _image;
   late TextEditingController _price;
   late String? userId;
-  int _currentValue = 0;
 
   late AnimationController _controllerAnimation;
   bool animationCompleted = false;
@@ -199,7 +198,6 @@ class _ProductsState extends State<Products>
         ascendingOrderPrice = true;
         ascendingOrderName = true;
       }
-
       items!.sort((a, b) {
         if (a[field] is String && b[field] is String) {
           String valueA = a[field].toString().toLowerCase();
@@ -567,7 +565,7 @@ class _ProductsState extends State<Products>
     _title.text = item['title'] ?? '';
     _description.text = item['description'] ?? '';
     _detail.text = item['detail'] ?? '';
-    _classify.text = item['classify'] ?? '';
+    // _classify.text = item['classify'] ?? '';
     _image.text = item['image'] ?? '';
     _price.text = item['price']?.toString() ?? '';
     return showDialog(

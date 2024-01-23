@@ -1,4 +1,4 @@
-final url = 'http://192.168.1.3:3000/';
+final url = 'http://192.168.20.119:3000/';
 final registration = url + 'register';
 final login = url + 'login';
 final addProduct = url + 'storeTodo';

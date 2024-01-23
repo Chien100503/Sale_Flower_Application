@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../TabBarProducts/ProductsTab.dart';
+
 class Explore extends StatefulWidget {
   const Explore({super.key});
 
@@ -153,21 +155,26 @@ class _ExploreState extends State<Explore> {
                         Text('Vapes', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),)
                       ],
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 85,
-                          width: 84,
-                          decoration: BoxDecoration(
-                              color: Color(0xfffdf7ee),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Image(
-                            image: AssetImage('lib/assets/cannabis.png'),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Products(),));
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 85,
+                            width: 84,
+                            decoration: BoxDecoration(
+                                color: Color(0xfffdf7ee),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Image(
+                              image: AssetImage('lib/assets/cannabis.png'),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 10,),
-                        Text('Flower', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),)
-                      ],
+                          SizedBox(height: 10,),
+                          Text('Flower', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),)
+                        ],
+                      ),
                     ),
                     Column(
                       children: [

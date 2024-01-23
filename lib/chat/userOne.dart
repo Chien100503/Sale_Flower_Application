@@ -47,7 +47,7 @@ class _UserOneState extends State<UserOne> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                                'Loremdajfhsjhdfjhjfhsjahfhkbgfgsfghjfsxxccccccxxxxxxxxxxxxxxxxxxg', style: TextStyle(color: Colors.white),),
+                                'Hello my friend', style: TextStyle(color: Colors.white),),
                           ),
                         ),
                       ),
@@ -314,31 +314,34 @@ class _UserOneState extends State<UserOne> {
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Type your message...',
-                            ),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.send),
-                        onPressed: () {
-                          // Xử lý khi người dùng nhấn nút gửi
-                        },
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Type your message...',
+                  ),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () {
+                // Xử lý khi người dùng nhấn nút gửi
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

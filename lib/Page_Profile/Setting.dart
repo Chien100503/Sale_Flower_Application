@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'ManagePassword.dart';
+
 class Setting extends StatefulWidget {
   const Setting({super.key});
 
@@ -70,25 +72,30 @@ class _SettingState extends State<Setting> {
                           )
                       )
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(Icons.key_outlined,size: 40, color: Color(
-                              0xff7b7b80),),
-                        ),
-                        Expanded(child: Text('Password Manager',
-                            style: TextStyle(
-                                color: Colors.black87,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500))),
-                        Icon(Icons.arrow_forward_ios),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordManagerPage(),));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Icon(Icons.key_outlined,size: 40, color: Color(
+                                0xff7b7b80),),
+                          ),
+                          Expanded(child: Text('Password Manager',
+                              style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500))),
+                          Icon(Icons.arrow_forward_ios),
 
-                      ],
+                        ],
 
+                      ),
                     ),
                   ),
                 ),
